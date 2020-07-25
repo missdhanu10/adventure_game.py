@@ -5,7 +5,7 @@ items = []
 
 def print_pause(message_to_print):
     print(message_to_print)
-    time.sleep(2)
+    time.sleep(0.2)
 
 
 def valid_input(prompt, option1, option2):
@@ -16,7 +16,7 @@ def valid_input(prompt, option1, option2):
         elif response == option2:
             break
         else:
-            break
+            print_pause("Please enter a valid input")
     return response
 
 
@@ -39,17 +39,11 @@ def play(items):
     print_pause("Enter 1 to knock on the door of the house.")
     print_pause("Enter 2 to peer into the cave.")
     print_pause("What would you like to do?")
-    while True:
-        response = valid_input("Please enter 1 or 2\n", "1", "2")
-        if response == "1":
-            house(items)
-            break
-        elif response == "2":
-            cave(items)
-            break
-        else:
-            continue
-        return response
+    response = valid_input("Please enter 1 or 2\n", "1", "2")
+    if response == "1":
+        house(items)
+    elif response == "2":
+        cave(items)
 
 
 def house(items):
@@ -59,7 +53,8 @@ def house(items):
         print_pause(f"opens and out steps a {sel_monster}.")
         print_pause(f"Eep! This is the {sel_monster}'s house!")
         print_pause(f"The {sel_monster} attacks you!")
-        response = input("Would you like to (1) fight or (2) run away?")
+        response = valid_input("Would you like to (1) fight"
+                               "or (2) run away?", "1", "2")
         if response == "1":
             print_pause("As the troll moves to attack,")
             print_pause("you unsheath your new sword.")
@@ -75,7 +70,8 @@ def house(items):
             print_pause("you don't seem to have been followed.\n")
             play(items)
         else:
-            play_again()
+            print_pause("Please enter a valid input")
+
     else:
         print_pause("You approach the door of the house.")
         print_pause(f"You are about to knock when the door")
@@ -84,7 +80,8 @@ def house(items):
         print_pause(f"The {sel_monster} attacks you!")
         print_pause("You feel a bit under-prepared for this")
         print_pause("what with only having a tiny dagger.")
-        response = input("Would you like to (1) fight or (2) run away?")
+        response = valid_input("Would you like to (1) fight"
+                               "or (2) run away?", "1", "2")
         if response == "1":
             print_pause("You do your best...")
             print_pause(f"but your dagger is no match for the {sel_monster}.")
@@ -95,7 +92,7 @@ def house(items):
             print_pause("you don't seem to have been followed.\n")
             play(items)
         else:
-            play_again()
+            print_pause("Please enter a valid input")
 
 
 def cave(items):
@@ -118,16 +115,15 @@ def cave(items):
 
 
 def play_again():
-    while True:
-        play_again = input("Would you like to play again? (y/n)")
-        if play_again == "y":
-            print_pause("Excellent! Restarting the game ...")
-            play_game()
-        elif play_again == "n":
-            print_pause("Thanks for playing! See you next time.")
-            break
-        else:
-            continue
+    play_again = valid_input("Would you like to play again?"
+                             "(y/n)", "y", "n")
+    if play_again == "y":
+        print_pause("Excellent! Restarting the game ...")
+        global sel_monster
+        sel_monster = random.choice(monster)
+        play_game()
+    elif play_again == "n":
+        print_pause("Thanks for playing! See you next time.")
 
 
 def play_game():
